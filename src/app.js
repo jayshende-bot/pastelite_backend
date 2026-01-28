@@ -7,23 +7,35 @@ const { renderPaste } = require('./controllers/pasteController');
 
 const app = express();
 
-// Set security-related HTTP headers
-app.use(helmet());
-
 // Trust proxy is required for rate limiting to work correctly behind load balancers (e.g. Vercel)
 app.set('trust proxy', 1);
 
 // Configure and enable CORS
 const corsOptions = {
-    // Allow requests from your frontend development server and production domain
-    origin: [
-        'http://localhost:3000',
-        'http://localhost:5173',
-        ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : [])
-    ],
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'http://localhost:3000',
+            'http://localhost:5173'
+        ];
+
+        if (process.env.FRONTEND_URL) {
+            allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
+        }
+
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
     optionsSuccessStatus: 200 // For legacy browser support
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Enable pre-flight for all routes
+
+// Set security-related HTTP headers
+app.use(helmet());
 
 // Enable JSON body parsing
 app.use(express.json());

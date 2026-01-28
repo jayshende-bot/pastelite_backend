@@ -15,7 +15,9 @@ const corsOptions = {
     origin: (origin, callback) => {
         const allowedOrigins = [
             'http://localhost:3000',
-            'http://localhost:5173'
+            'http://localhost:5173',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:5173'
         ];
 
         if (process.env.FRONTEND_URL) {
@@ -32,7 +34,6 @@ const corsOptions = {
     optionsSuccessStatus: 200 // For legacy browser support
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Enable pre-flight for all routes
 
 // Set security-related HTTP headers
 app.use(helmet());

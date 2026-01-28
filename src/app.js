@@ -16,7 +16,11 @@ app.set('trust proxy', 1);
 // Configure and enable CORS
 const corsOptions = {
     // Allow requests from your frontend development server and production domain
-    origin: process.env.FRONTEND_URL || ['http://localhost:3000', 'http://localhost:5173'],
+    origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : [])
+    ],
     optionsSuccessStatus: 200 // For legacy browser support
 };
 app.use(cors(corsOptions));

@@ -35,17 +35,16 @@ const startServer = async () => {
         } else {
             console.log(`Database connected and contains ${count} pastes.`);
         }
-
-        // Start the server only after DB connection is established
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
-        });
     } catch (err) {
         console.error('MongoDB connection error:', err);
-        console.error('Could not connect to the database. The server will not start.');
+        console.error('Could not connect to the database. Starting server in offline mode.');
         console.error('Ensure MongoDB is running and the MONGO_URI is configured correctly.');
-        process.exit(1);
     }
+
+    // Start the server regardless of DB connection status
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 };
 
 startServer();

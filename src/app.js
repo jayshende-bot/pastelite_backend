@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const healthRoutes = require('./routes/healthRoutes');
+const mongoose = require('mongoose');
 const pasteRoutes = require('./routes/pasteRoutes');
 const { renderPaste } = require('./controllers/pasteController');
 
@@ -42,7 +42,13 @@ app.use(helmet());
 app.use(express.json());
 
 // Routes
-app.use('/api/healthz', healthRoutes);
+app.get('/api/healthz', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        dbState: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    });
+});
 app.use('/api/pastes', pasteRoutes);
 app.use('/pastes', pasteRoutes);
 app.get('/p/:id', renderPaste);

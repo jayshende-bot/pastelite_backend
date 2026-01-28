@@ -9,7 +9,7 @@ router.get('/p/:id', async (req, res) => {
 
     // 1. Handle Invalid Paste ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ error: 'Paste unavailable' });
+        return res.status(400).json({ error: 'Invalid ID format' });
     }
 
     try {
@@ -18,7 +18,7 @@ router.get('/p/:id', async (req, res) => {
 
         // 3. Handle Paste does not exist
         if (!paste) {
-            return res.status(404).json({ error: 'Paste unavailable' });
+            return res.status(404).json({ error: 'Paste not found' });
         }
 
         // 4. Return the paste data

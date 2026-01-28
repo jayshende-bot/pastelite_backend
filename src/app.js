@@ -27,6 +27,7 @@ app.use(express.json());
 // Routes
 app.use('/api/healthz', healthRoutes);
 app.use('/api/pastes', pasteRoutes);
+app.use('/pastes', pasteRoutes);
 app.get('/p/:id', renderPaste);
 
 // 404 Handler for unknown API routes

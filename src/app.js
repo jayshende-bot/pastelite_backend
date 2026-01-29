@@ -11,29 +11,13 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Configure and enable CORS
-const corsOptions = {
-    origin: (origin, callback) => {
-        const allowedOrigins = [
-            'http://localhost:3000',
-            'http://localhost:5173',
-            'http://127.0.0.1:3000',
-            'http://127.0.0.1:5173'
-        ];
-
-        if (process.env.FRONTEND_URL) {
-            allowedOrigins.push(process.env.FRONTEND_URL.replace(/\/$/, ''));
-        }
-
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+app.use(cors({
+    // This setting is flexible for Vercel. It allows requests from your deployed frontend,
+    // Vercel preview URLs, and localhost by reflecting the request's 'Origin' header.
+    origin: true,
     credentials: true,
     optionsSuccessStatus: 200 // For legacy browser support
-};
-app.use(cors(corsOptions));
+}));
 
 // Set security-related HTTP headers
 app.use(helmet());
@@ -42,6 +26,11 @@ app.use(helmet());
 app.use(express.json());
 
 // Routes
+app.get('/', (req, res) => {
+    res.status(200).json({
+        message: "Backend working 🚀"
+    });
+});
 app.get('/api/healthz', (req, res) => {
     res.status(200).json({
         status: 'ok',

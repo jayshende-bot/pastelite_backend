@@ -5,6 +5,7 @@ const Paste = require('./models/Paste');
 
 // The server port is determined by the PORT environment variable (from your .env file).
 // If it's not set, it defaults to 3001. Your log shows it's correctly using 5000.
+// If it's not set, it defaults to 5000 for local development.
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pastelite';
 

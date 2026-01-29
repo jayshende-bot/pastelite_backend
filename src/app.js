@@ -49,7 +49,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('/(.*)', cors(corsOptions)); // Handle pre-flight requests for all routes
+app.options(/.*/, cors(corsOptions)); // Handle pre-flight requests for all routes
 
 // 3. Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' })); // Limit request body size for security

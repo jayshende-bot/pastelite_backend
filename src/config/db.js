@@ -1,13 +1,19 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI); // no options needed
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    mongoose.set('strictQuery', false);
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
+      dbName: "pastelite",
+      serverSelectionTimeoutMS: 15000, // Increase timeout to 15 seconds
+    });
+
+    console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`Error connecting to MongoDB: ${error.message}`);
+    console.error("❌ MongoDB connection failed:", error.message);
     process.exit(1);
   }
 };
 
-module.exports = connectDB;
+
+export default connectDB;

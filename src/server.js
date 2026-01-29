@@ -1,51 +1,9 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const app = require('./app');
-const Paste = require('./models/Paste');
+import 'dotenv/config'; // Make sure to load environment variables
+import app from './app.js';
 
-// The server port is determined by the PORT environment variable (from your .env file).
-// If it's not set, it defaults to 3001. Your log shows it's correctly using 5000.
-// If it's not set, it defaults to 5000 for local development.
+// This file is ONLY for local development. Vercel will not use it.
 const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/pastelite';
 
-const startServer = async () => {
-    try {
-        // Log the URI to help with debugging connection issues
-        console.log(`Attempting to connect to MongoDB at: ${MONGO_URI}`);
-        // Connect to MongoDB
-        await mongoose.connect(MONGO_URI);
-        console.log('Successfully connected to MongoDB.');
-
-        // Log exact connection details to help locate the data
-        console.log('------------------------------------------------');
-        console.log(`Connected to Database: "${mongoose.connection.name}"`);
-        console.log(`Connected to Host:     "${mongoose.connection.host}"`);
-        console.log(`Connected to Port:     "${mongoose.connection.port}"`);
-        console.log('------------------------------------------------');
-
-        // Auto-initialize the database with a sample document so it becomes visible
-        const count = await Paste.countDocuments();
-        if (count === 0) {
-            console.log('Database is empty. Creating a sample paste to ensure the database is created...');
-            const sample = await Paste.create({
-                content: 'Welcome to PasteLite! This paste ensures your database is initialized.',
-                views: 0
-            });
-            console.log(`Database initialized! Sample paste ID: ${sample._id}`);
-        } else {
-            console.log(`Database connected and contains ${count} pastes.`);
-        }
-    } catch (err) {
-        console.error('MongoDB connection error:', err);
-        console.error('Could not connect to the database. Starting server in offline mode.');
-        console.error('Ensure MongoDB is running and the MONGO_URI is configured correctly.');
-    }
-
-    // Start the server regardless of DB connection status
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-};
-
-startServer();
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});

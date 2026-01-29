@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import pasteRoutes from './routes/pasteRoutes.js';
-import createPasteLimiter from '../rateLimiter.js';
+import createPasteLimiter from './rateLimiter.js';
 import { renderPaste } from './controllers/pasteController.js';
 import { globalErrorHandler } from '../errorController.js';
 

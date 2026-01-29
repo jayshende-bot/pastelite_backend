@@ -1,5 +1,5 @@
 // A custom error class for handling "operational" errors (e.g., user input errors).
-class AppError extends Error {
+export class AppError extends Error {
     constructor(message, statusCode) {
         super(message);
 
@@ -39,7 +39,7 @@ const sendErrorProd = (err, res) => {
     });
 };
 
-const globalErrorHandler = (err, req, res, next) => {
+export const globalErrorHandler = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 
@@ -51,6 +51,3 @@ const globalErrorHandler = (err, req, res, next) => {
         sendErrorProd(err, res);
     }
 };
-
-module.exports = globalErrorHandler;
-module.exports.AppError = AppError;

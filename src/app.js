@@ -10,6 +10,11 @@ const app = express();
 // Trust proxy is required for rate limiting to work correctly behind load balancers (e.g. Vercel)
 app.set('trust proxy', 1);
 
+// Handler for browser favicon requests.
+// Placed at the top to prevent 404 errors in logs and bypass other middleware.
+app.get('/favicon.ico', (req, res) => res.sendStatus(204));
+app.get('/favicon.png', (req, res) => res.sendStatus(204));
+
 // Configure and enable CORS
 app.use(cors({
     // This setting is flexible for Vercel. It allows requests from your deployed frontend,
@@ -26,11 +31,6 @@ app.use(helmet());
 app.use(express.json());
 
 // Routes
-// Handler for browser favicon requests.
-// This prevents 404 errors in the logs for a missing favicon by sending a "No Content" response.
-app.get('/favicon.ico', (req, res) => res.sendStatus(204));
-app.get('/favicon.png', (req, res) => res.sendStatus(204));
-
 app.get('/', (req, res) => {
     res.status(200).json({
         message: "Backend working 🚀"

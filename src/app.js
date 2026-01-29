@@ -22,7 +22,7 @@ app.get('/favicon.png', (req, res) => res.sendStatus(204));
 app.use(express.json());
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || '*', // Fallback to allow all origins during development
+    origin: process.env.FRONTEND_URL || '*',
     credentials: true,
 }));
 

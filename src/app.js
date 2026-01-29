@@ -28,8 +28,8 @@ app.use(express.json());
 // Routes
 // Handler for browser favicon requests.
 // This prevents 404 errors in the logs for a missing favicon by sending a "No Content" response.
-app.get('/favicon.ico', (req, res) => res.status(204).send());
-app.get('/favicon.png', (req, res) => res.status(204).send());
+app.get('/favicon.ico', (req, res) => res.sendStatus(204));
+app.get('/favicon.png', (req, res) => res.sendStatus(204));
 
 app.get('/', (req, res) => {
     res.status(200).json({
